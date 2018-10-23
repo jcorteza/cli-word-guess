@@ -1,0 +1,23 @@
+{
+  "name": "cli-word-guess",
+  "version": "1.0.0",
+  "description": "The goal of this command line interface game is to guess the word. The theme: colors!",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jcorteza/cli-word-guess.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jcorteza/cli-word-guess/issues"
+  },
+  "homepage": "https://github.com/jcorteza/cli-word-guess#readme",
+  "dependencies": {
+    "prompt": "^1.0.0"
+  }
+}

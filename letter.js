@@ -5,6 +5,7 @@ const Letter = function(char){
 }
 Letter.prototype.changeDisplay = function(){
     if(this.guessed) this.display = this.right;
+    console.log(`Display letter is now ${this.display}`);
 }
 
 module.exports = Letter;

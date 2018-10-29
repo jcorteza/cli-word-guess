@@ -5,7 +5,6 @@ const wordSet = process.argv[2];
 
 function wordGuess() {
     let wordsInPlay = [];
-    let wrongsLeft = 5;
     let losses = 3;
     let won;
     let guessObject = {
@@ -20,15 +19,18 @@ function wordGuess() {
     setupGame(wordsInPlay);
     prompt.start();
     wordsInPlay.forEach((word) =>{
+        let wrongsLeft = 5;
         let solved = false;
-        if(losses > 0){
+        if (losses > 0){
             console.log(`This round's word is ${word}.`);
             const wordThisRound = new Word(word);
             wordThisRound.setupWord();
-            do {
+            while (wrongsLeft > 0) {
+                console.log('Inside wrongs left while loop.');
                 wordThisRound.updateWordDisplay();
                 new Promise(function(resolve) {
                     prompt.get(guessObject, (err, result) => {
+                        console.log('Inside prompt.get.');
                         if(err) throw err;
                         let userGuess;
                         const letterGuessed = result.guess.toLowerCase();
@@ -44,23 +46,33 @@ function wordGuess() {
                         resolve({gussedRight: userGuess, letter: letterGuessed});
                     });
                 }).then(function(promise){
-                    gameFeedback(promise.gussedRight, promise.letter);
-                });
-                --wrongsLeft;
-                for(let key in wordThisRound.wordObject){
-                    if(wordThisRound.wordObject[key].guessed === true) solved = true;
-                    else {
-                        solved = false; 
-                        return;
+                    console.log('Inside .then function.');
+                    new Promise(function(resolve){
+                        gameFeedback(promise.gussedRight, promise.letter);
+                        resolve();
+                    });
+                    console.log(`Wrongs Left: ${--wrongsLeft}`);
+                });/*.then(function(){
+                    for(let key in wordThisRound.wordObject){
+                        console.log('Inside for loop');
+                        if(wordThisRound.wordObject[key].guessed === true){
+                            solved = true;
+                        } 
+                        else {
+                            solved = false; 
+                            return;
+                        }
                     }
-                }
-            } while(wrongsLeft > 0 || solved !== true);
-            if(wrongsLeft === 0) losses--;
+                });*/
+                console.log('End of while loop.');
+                if(solved) break;
+            }
+            if(wrongsLeft === 0) console.log(`Losses left: ${--losses}`);
         }
     });
     console.log('Reached the end of the words.');
     let message;
-    (won)? message = '====================/YOU WON=========================' : message = '====================/YOU LOST========================'
+    (won)? message = '====================/YOU WON/=========================' : message = '====================/YOU LOST/======================='
     console.log('\n=====================================================');
     console.log('====================/GAME OVER/======================');
     console.log('=====================================================');
